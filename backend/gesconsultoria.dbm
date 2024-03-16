@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.0.6" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="4"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="gesconsultoria" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<schema name="gesconsultoria" layers="0" rect-visible="true" fill-color="#e1e1e1">
+	<role name="postgres"/>
+</schema>
+
+<table name="users" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="gesconsultoria"/>
+	<role name="postgres"/>
+	<position x="280" y="200"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="eid" not-null="true" default-value="gen_random_uuid()">
+		<type name="uuid" length="0"/>
+		<comment> <![CDATA[External ID]]> </comment>
+	</column>
+	<column name="email" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="password" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="role" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="pk_users" type="pk-constr" table="gesconsultoria.users">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="uq_users_email" type="uq-constr" table="gesconsultoria.users">
+		<columns names="email" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<extension name="pgcrypto">
+	<schema name="public"/>
+</extension>
+
+<table name="project" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="gesconsultoria"/>
+	<role name="postgres"/>
+	<position x="800" y="200"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="eid" not-null="true" default-value="gen_random_uuid()">
+		<type name="uuid" length="0"/>
+		<comment> <![CDATA[External ID]]> </comment>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="initial_date" not-null="true" default-value="NOW()">
+		<type name="date" length="0"/>
+	</column>
+	<column name="end_date" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+	<column name="manager_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="pk_project" type="pk-constr" table="gesconsultoria.project">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="uq_project_eid" type="uq-constr" table="gesconsultoria.project">
+		<columns names="eid" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="fk_project_users" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="gesconsultoria.users" table="gesconsultoria.project">
+	<columns names="manager_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_project_users" type="relfk" layers="0"
+	 src-table="gesconsultoria.project"
+	 dst-table="gesconsultoria.users" reference-fk="fk_project_users"
+	 src-required="false" dst-required="true"/>
+
+</dbmodel>
