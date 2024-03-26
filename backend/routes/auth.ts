@@ -4,7 +4,7 @@ const client = new postgres.Client({
   user: "",
   database: "gesconsultoria",
   hostname: "localhost",
-  port: 5432, // Porta padrão do PostgreSQL
+  port: 5432,
   password: "",
 });
 
